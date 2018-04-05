@@ -1,7 +1,9 @@
 """Provide helper classes used by other models."""
 import random
 import time
-
+import pytz
+from datetime import datetime
+from pytz import timezone
 
 class BoundedSet(object):
     """A set with a maximum size that evicts the oldest items when necessary.
@@ -173,4 +175,8 @@ def stream_generator(function, pause_after=None):
                 responses_without_new = 0
                 yield None
             else:
+                date = datetime.now(tz=pytz.utc)
+                date = date.astimezone(timezone('US/Pacific'))
+                print "Nothing new for now. Current timestamp: {0}".format(date.strftime("%m/%d/%Y %H:%M:%S %Z"))
+                print "Sleeping for {0} seconds...".format(exponential_counter.counter())
                 time.sleep(exponential_counter.counter())
